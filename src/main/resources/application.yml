@@ -1,0 +1,6 @@
+server:
+  port: 8888 # 项目启动端口
+spring:
+  profiles:
+    # 指定哪个文件，比如dev.yml prod.yml
+    active: '@spring.active@'
