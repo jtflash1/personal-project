@@ -12,7 +12,7 @@ import lombok.Setter;
 public enum ErrorCode {
     PARAMS_ERROR(40000, "请求参数错误", ""),
     BUSINESS_EXCEPTION(40001, "业务异常", "业务异常"),
-    EXCEPTION(40002, "异常", "");
+    EXCEPTION(40002, "代码异常", "");
     /**
      * 状态码信息
      */

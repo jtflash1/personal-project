@@ -24,7 +24,7 @@ public class TestController {
 
     @PostMapping("/queryList")
     @LogAopAnnotation(isParam = true, isDetail = true, isTime = true)
-    public BaseResponse<Map<String, Object>> queryList(@RequestBody Map<String, Object> params, @PathVariable  String id) {
+    public BaseResponse<Map<String, Object>> queryList(@RequestBody Map<String, Object> params) {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("code", 200);
         result.put("status", "success");

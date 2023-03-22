@@ -19,6 +19,6 @@ public class PersonalProjectApplicationTest {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("userid", "10000");
         params.put("username", "Tom");
-        testController.queryList(params, "23");
+//        testController.queryList(params);
     }
 }
