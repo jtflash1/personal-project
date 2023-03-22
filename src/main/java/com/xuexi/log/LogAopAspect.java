@@ -41,7 +41,7 @@ public class LogAopAspect {
      * 环绕通知, 该处写具体日志逻辑
      */
     @Around("logPointcut()")
-    public void logAround(ProceedingJoinPoint joinPoint) {
+    public void logAround(ProceedingJoinPoint joinPoint) throws Exception {
         long startTime = System.currentTimeMillis();
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         // 获取方法名称
@@ -67,7 +67,7 @@ public class LogAopAspect {
             Object proceed = joinPoint.proceed();
             resp = JSON.toJSONString(proceed, SerializerFeature.WriteMapNullValue);
         } catch (Throwable throwable) {
-            throw new BusinessException(ErrorCode.BUSINESS_EXCEPTION);
+            throw new Exception(throwable);
         }
         long endTime = System.currentTimeMillis();
         boolean isDetail = annotation.isDetail();

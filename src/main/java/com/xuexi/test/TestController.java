@@ -29,12 +29,7 @@ public class TestController {
         result.put("code", 200);
         result.put("status", "success");
         result.put("params", params);
-        try {
-            double b = 1/0;
-        } catch (ArithmeticException e) {
-            throw new BusinessException(ErrorCode.EXCEPTION);
-        }
-
+        double b = 1/0;
         return ResultUtils.success(result);
     }
 }
