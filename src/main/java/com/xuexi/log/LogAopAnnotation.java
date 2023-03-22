@@ -30,6 +30,12 @@ import java.lang.annotation.Target;
 public @interface LogAopAnnotation {
 
     /**
+     * 是否打印日志
+     * @return
+     */
+    boolean isPrint() default true;
+
+    /**
      * 是否打印入参
      *
      * @return

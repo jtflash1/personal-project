@@ -41,7 +41,7 @@ public class LogAopAspect {
      * 环绕通知, 该处写具体日志逻辑
      */
     @Around("logPointcut()")
-    public void logAround(ProceedingJoinPoint joinPoint) throws Exception {
+    public Object logAround(ProceedingJoinPoint joinPoint) throws Exception {
         long startTime = System.currentTimeMillis();
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         // 获取方法名称
@@ -49,22 +49,26 @@ public class LogAopAspect {
         // 获取方法上的注解，判断如果isDetail值为true，则打印结束日志
         Method method = signature.getMethod();
         LogAopAnnotation annotation = method.getAnnotation(LogAopAnnotation.class);
+        boolean isPrint = annotation.isPrint();
         boolean isParam = annotation.isParam();
-        if (isParam) {
-            // 获取入参
-            String[] parameterNames = signature.getParameterNames();
-            Object[] param = joinPoint.getArgs();
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < parameterNames.length; i++) {
-                sb.append(parameterNames[i] + ": ").append(param[i]).append("; ");
+        if (isPrint) {
+            if (isParam) {
+                // 获取入参
+                String[] parameterNames = signature.getParameterNames();
+                Object[] param = joinPoint.getArgs();
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < parameterNames.length; i++) {
+                    sb.append(parameterNames[i] + ": ").append(param[i]).append("; ");
+                }
+                log.info("进入方法[{}], 参数: [{}].", methodName, sb.toString());
+            } else {
+                log.info("进入方法[{}].", methodName);
             }
-            log.info("进入方法[{}], 参数: [{}].", methodName, sb.toString());
-        } else {
-            log.info("进入方法[{}].", methodName);
         }
-        String resp = "";
+        String resp;
+        Object proceed;
         try {
-            Object proceed = joinPoint.proceed();
+            proceed = joinPoint.proceed();
             resp = JSON.toJSONString(proceed, SerializerFeature.WriteMapNullValue);
         } catch (Throwable throwable) {
             throw new Exception(throwable);
@@ -72,18 +76,19 @@ public class LogAopAspect {
         long endTime = System.currentTimeMillis();
         boolean isDetail = annotation.isDetail();
         boolean isTime = annotation.isTime();
-        if (isDetail) {
-            if (isTime) {
-                log.info("方法[{}]执行结束, 返回值: [{}], 耗费时间: [{}]ms.", methodName, resp, endTime - startTime);
+        if (isPrint) {
+            if (isDetail) {
+                if (isTime)
+                    log.info("方法[{}]执行结束, 返回值: [{}], 耗费时间: [{}]ms.", methodName, resp, endTime - startTime);
+                else
+                    log.info("方法[{}]执行结束, 返回值: [{}].", methodName, resp);
             } else {
-                log.info("方法[{}]执行结束, 返回值: [{}].", methodName, resp);
-            }
-        } else {
-            if (isTime) {
-                log.info("方法[{}]执行结束, 耗费时间: [{}]ms.", methodName, resp, endTime - startTime);
-            } else {
-                log.info("方法[{}]执行结束.", methodName);
+                if (isTime)
+                    log.info("方法[{}]执行结束, 耗费时间: [{}]ms.", methodName, resp, endTime - startTime);
+                else
+                    log.info("方法[{}]执行结束.", methodName);
             }
         }
+        return proceed;
     }
 }
