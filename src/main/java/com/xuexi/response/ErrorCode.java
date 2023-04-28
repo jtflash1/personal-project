@@ -2,7 +2,6 @@ package com.xuexi.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 异常码
@@ -10,9 +9,13 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+
     PARAMS_ERROR(40000, "请求参数错误", ""),
+
     BUSINESS_EXCEPTION(40001, "业务异常", "业务异常"),
+
     EXCEPTION(40002, "代码异常", "");
+
     /**
      * 状态码信息
      */

@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  */
 // 指定注解使用在方法上
 @Target(ElementType.METHOD)
-/**
+/*
  * Retention: 表示注解保留时间长短
  *
  * SOURCE：在源文件中有效，编译过程中会被忽略
@@ -24,35 +24,36 @@ import java.lang.annotation.Target;
  */
 // 指定生效至运行时
 @Retention(RetentionPolicy.RUNTIME)
-/**
+/*
  * 日志切面注解
  */
 public @interface LogAopAnnotation {
 
     /**
      * 是否打印日志
-     * @return
+     *
+     * @return 打印日志开关
      */
     boolean isPrint() default true;
 
     /**
      * 是否打印入参
      *
-     * @return
+     * @return 打印入参开关
      */
     boolean isParam() default false;
 
     /**
      * 指定是否详情显示,true 显示详情, 默认false
      *
-     * @return
+     * @return 详情展示开关
      */
     boolean isDetail() default false;
 
     /**
      * 是否开启查看任务执行时间
      *
-     * @return
+     * @return 执行时间开关
      */
     boolean isTime() default false;
 }

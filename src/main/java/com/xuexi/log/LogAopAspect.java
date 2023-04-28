@@ -2,8 +2,6 @@ package com.xuexi.log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.xuexi.exception.BusinessException;
-import com.xuexi.response.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -29,7 +27,7 @@ public class LogAopAspect {
     public void logPointcut() {
     }
 
-    /**
+    /*
      * @Before: 前置通知, 在方法执行之前执行
      * @After: 后置通知, 在方法执行之后执行
      * @AfterRunning: 返回通知, 在方法返回结果之后执行
@@ -58,7 +56,7 @@ public class LogAopAspect {
                 Object[] param = joinPoint.getArgs();
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < parameterNames.length; i++) {
-                    sb.append(parameterNames[i] + ": ").append(param[i]).append("; ");
+                    sb.append(parameterNames[i]).append(": ").append(param[i]).append("; ");
                 }
                 log.info("进入方法[{}], 参数: [{}].", methodName, sb.toString());
             } else {
@@ -84,7 +82,7 @@ public class LogAopAspect {
                     log.info("方法[{}]执行结束, 返回值: [{}].", methodName, resp);
             } else {
                 if (isTime)
-                    log.info("方法[{}]执行结束, 耗费时间: [{}]ms.", methodName, resp, endTime - startTime);
+                    log.info("方法[{}]执行结束, 耗费时间: [{}]ms.", methodName, endTime - startTime);
                 else
                     log.info("方法[{}]执行结束.", methodName);
             }

@@ -1,8 +1,7 @@
 package com.xuexi.exception;
 
-import com.xuexi.response.BaseResponse;
 import com.xuexi.response.ErrorCode;
-import com.xuexi.response.ResultUtils;
+import com.xuexi.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,9 +20,9 @@ import java.sql.SQLException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)//全局捕获这个异常进行处理
-    public BaseResponse businessExceptionHandler(BusinessException e) {
+    public <T> Result<T> businessExceptionHandler(BusinessException e) {
         log.error("businessException:" + e.getMessage(), e);
-        return ResultUtils.error(e.getCode(), e.getMessage(), e.getDescription());
+        return Result.fail(e.getMessage());
     }
 
     @ExceptionHandler({
@@ -44,15 +43,15 @@ public class GlobalExceptionHandler {
             RuntimeException.class// 是那些可能在Java虚拟机正常运行期间抛出的异常的超类
     })
     //全局捕获这个异常进行处理
-    public BaseResponse commonExceptionHandler(Exception e) {
+    public <T> Result<T> commonExceptionHandler(Exception e) {
         log.error("Exception:" + e.getCause().toString());
         e.printStackTrace();
-        return ResultUtils.error(ErrorCode.EXCEPTION);
+        return Result.fail(ErrorCode.EXCEPTION);
     }
 
     @ExceptionHandler(Exception.class)//全局捕获这个异常进行处理
-    public BaseResponse exceptionHandler(Exception e) {
+    public <T> Result<T> exceptionHandler(Exception e) {
         log.error("Exception:" + e.getMessage(), e);
-        return ResultUtils.error(ErrorCode.EXCEPTION);
+        return Result.fail(ErrorCode.EXCEPTION);
     }
 }
